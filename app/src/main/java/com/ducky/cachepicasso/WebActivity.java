@@ -14,30 +14,23 @@ import android.widget.ProgressBar;
 
 public class WebActivity extends AppCompatActivity {
 
+    private ProgressBar mSmoothprogressbar;
     private Button mbtnBack;
     private WebView mwebView;
-
-    private int mprogress;
-
-    private static final int UPER_LIMIT = 70;
-    private static final int MIDDLE_LIMIT = 60;
-    private static final int LOW_LIMIT = 10;
-    private static final int INCREASE_MANUFATUAL = 1;
-
-    private ProgressBar mSmoothprogressbar;
-
+    private SmoothProgress msmoothProgress;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.webview_layout);
         initView();
-
     }
+
     private void initView(){
         mbtnBack = findViewById(R.id.btn_back);
         mwebView = findViewById(R.id.wv_web);
         mSmoothprogressbar = findViewById(R.id.pgbar_loadweb);
+        msmoothProgress = new SmoothProgress(mSmoothprogressbar);
 
         mbtnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -49,9 +42,7 @@ public class WebActivity extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                if(mSmoothprogressbar.getVisibility() == View.VISIBLE){
-                    mSmoothprogressbar.setVisibility(View.INVISIBLE);
-                }
+                msmoothProgress.hideProgress();
             }
 
             @Override
@@ -64,45 +55,19 @@ public class WebActivity extends AppCompatActivity {
             public void onProgressChanged(WebView view, int newProgress) {
                 super.onProgressChanged(view, newProgress);
                 Log.i("wq","progress int:"+ newProgress);
-                mprogress = newProgress;
-                if(mSmoothprogressbar.getVisibility() ==  View.VISIBLE){
-                    setmyProgress(mprogress);
-                }
+//                msmoothProgress.setProgressBySmoothValue(newProgress);
+                msmoothProgress.setProgressByAnimation(newProgress);
             }
         });
 
-        mwebView.loadUrl("https://developer.android.google.cn/");
+        mwebView.loadUrl("https://coolshell.cn/articles/4990.html");
 
-    }
-
-
-
-    private void setmyProgress(int progress) {
-        int gto = getSmoothprogress(progress);
-        int gfrom = progress;
-        while (gfrom < gto){
-            gfrom += INCREASE_MANUFATUAL;
-            mSmoothprogressbar.setProgress(gfrom);
-        }
-    }
-
-    private int getSmoothprogress(int progress){
-        if(progress<=LOW_LIMIT){
-            return LOW_LIMIT;
-        }else if(progress<=MIDDLE_LIMIT){
-            return MIDDLE_LIMIT;
-        }else if(progress<=UPER_LIMIT){
-            return  UPER_LIMIT;
-        }else {
-            return 100;
-        }
     }
 
 
     @Override
     protected void onStart() {
         super.onStart();
-
     }
 
     @Override
