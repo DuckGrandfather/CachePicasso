@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">CachePicasso</string>
+    <string name="texthint">你好</string>
+    <string name="btn_name">按钮</string>
 </resources>

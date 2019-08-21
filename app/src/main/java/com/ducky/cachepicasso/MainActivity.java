@@ -1,5 +1,6 @@
 package com.ducky.cachepicasso;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -26,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
     }
-
-
 
     @Override
     protected void onStart() {
